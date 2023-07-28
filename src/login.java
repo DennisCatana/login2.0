@@ -71,7 +71,7 @@ public class login {
                 System.out.println("Ciudad: "+rs.getString("Ciudad"));
                 System.out.println("Edad: "+rs.getInt("Edad"));
                 System.out.println("Cédula: "+rs.getInt("Cedula"));*/
-                System.out.println("clave"+rs.getString("Clave"));
+                System.out.println("Clave: "+rs.getString("Clave"));
 
             }
         }catch (Exception ex){
