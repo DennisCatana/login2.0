@@ -1,16 +1,15 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class login {
     private JTextField usuario;
     private JButton OKButton;
     private JPasswordField clave;
     private JPanel login;
+    private JButton borrarButton;
+    private JButton actualizarButton;
     private JPanel rootPanel;
     static final String DB_URL="jdbc:mysql://localhost/Universidad";
     static final String USER="root";
@@ -25,16 +24,23 @@ public class login {
         OKButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                conectar();
                 usuariox =usuario.getText().trim();
                 clavex = new String(clave.getPassword()).trim();
                 comprobar();
             }
         });
 
+        borrarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                usuariox =usuario.getText().trim();
+                clavex = new String(clave.getPassword()).trim();
+                eliminar(usuariox);
+
+            }
+        });
     }
-
-
-
 
 
     public static void comprobar(){
@@ -50,19 +56,42 @@ public class login {
                 Clavei = rs.getString("Clave");
                 if(Nombrei.equals(usuariox) && Clavei.equals(clavex)){
                     userFound = true;
-                    System.out.println("\n----------------------------------------------");
+                    System.out.println("----------------------------------------------");
                     System.out.println("Nombre: "+rs.getString("Nombre"));
-                /*System.out.println("id: "+rs.getInt("id"));
-                System.out.println("Ciudad: "+rs.getString("Ciudad"));
-                System.out.println("Edad: "+rs.getInt("Edad"));
-                System.out.println("Cédula: "+rs.getInt("Cedula"));*/
                     System.out.println("Clave: "+rs.getString("Clave"));
+                    System.out.println("----------------------------------------------");
                 }}
             if (!userFound){
                     System.out.println("!!ERRORR¡¡ Usuario o clave incorrectos.\"");
             }
         }catch (Exception ex){
             throw new RuntimeException(ex);
+        }
+    }
+    public static void eliminar(String usu){
+        String query2 = "DELETE FROM Estudiantes where Nombre = '"+ usu +"'";
+        System.out.println(query2);
+        try(
+                Connection conn = DriverManager.getConnection(DB_URL,USER,PASS); //Esencial para la conección
+                Statement stmt= conn.createStatement();
+        ){
+            stmt.executeUpdate(query2);
+            System.out.println("Usuario morido");
+        }catch (Exception el){
+            throw new RuntimeException(el);
+        }
+    }
+
+    public static void conectar(){
+        try{
+            final String DB_URL="jdbc:mysql://localhost/Universidad";
+            final String USER="root";
+            final String PASS="root_bas3";
+            Connection conn = DriverManager.getConnection(DB_URL,USER,PASS); //Esencial para la conección
+            Statement stmt= conn.createStatement();
+
+        }catch(SQLException S){
+            JOptionPane.showMessageDialog(null,S.getMessage(),"ERROR DE CONEXION",JOptionPane.ERROR_MESSAGE);
         }
     }
     public static void main(String[] args) {
