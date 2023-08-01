@@ -50,6 +50,15 @@ public class login {
             }
         });
 
+        actualizarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                usuariox =usuario.getText().trim();
+                clavex = new String(clave.getPassword()).trim();
+                actualizar(clavex);
+            }
+        });
+
     }
 
     public static void agregar(String usu, String clax){
@@ -101,6 +110,21 @@ public class login {
         ){
             stmt.executeUpdate(query2);
             System.out.println("Usuario morido xd");
+            System.out.println("----------------------------------------------");
+        }catch (Exception el){
+            throw new RuntimeException(el);
+        }
+    }
+
+    public static void actualizar(String clave){
+        String query2 = "UPDATE Estudiantes set Clave = '"+1234+"'"+ "where Nombre="+'"'+ "Dennis" +'"' ;
+        //System.out.println(query2);
+        try(
+                Connection conn = DriverManager.getConnection(DB_URL,USER,PASS); //Esencial para la conección
+                Statement stmt= conn.createStatement();
+        ){
+            stmt.executeUpdate(query2);
+            System.out.println("Usuario Actualizado xd");
             System.out.println("----------------------------------------------");
         }catch (Exception el){
             throw new RuntimeException(el);
