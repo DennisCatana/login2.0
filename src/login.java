@@ -10,6 +10,7 @@ public class login {
     private JPanel login;
     private JButton borrarButton;
     private JButton actualizarButton;
+    private JButton agregarButton;
     private JPanel rootPanel;
     static final String DB_URL="jdbc:mysql://localhost/Universidad";
     static final String USER="root";
@@ -37,12 +38,34 @@ public class login {
                 usuariox =usuario.getText().trim();
                 clavex = new String(clave.getPassword()).trim();
                 eliminar(usuariox);
+            }
+        });
+        agregarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                usuariox =usuario.getText().trim();
+                clavex = new String(clave.getPassword()).trim();
+                agregar(usuariox, clavex);
 
             }
         });
+
     }
 
-
+    public static void agregar(String usu, String clax){
+        String query3 = " insert into Estudiantes values('"+usu+"','"+clax+"')";
+        //System.out.println(query3);
+        try(
+                Connection conn = DriverManager.getConnection(DB_URL,USER,PASS); //Esencial para la conección
+                Statement stmt= conn.createStatement();
+        ){
+            stmt.executeUpdate(query3);
+            System.out.println("Usuario nuevito xd");
+            System.out.println("----------------------------------------------");
+        }catch (Exception el){
+            throw new RuntimeException(el);
+        }
+    }
     public static void comprobar(){
         try(
                 Connection conn = DriverManager.getConnection(DB_URL,USER,PASS); //Esencial para la conección
@@ -56,13 +79,14 @@ public class login {
                 Clavei = rs.getString("Clave");
                 if(Nombrei.equals(usuariox) && Clavei.equals(clavex)){
                     userFound = true;
-                    System.out.println("----------------------------------------------");
+                   // System.out.println("----------------------------------------------");
                     System.out.println("Nombre: "+rs.getString("Nombre"));
                     System.out.println("Clave: "+rs.getString("Clave"));
                     System.out.println("----------------------------------------------");
                 }}
             if (!userFound){
-                    System.out.println("!!ERRORR¡¡ Usuario o clave incorrectos.\"");
+                 System.out.println("----------------------------------------------");
+                 System.out.println("!!ERRORR¡¡ Usuario o clave incorrectos.");
             }
         }catch (Exception ex){
             throw new RuntimeException(ex);
@@ -70,18 +94,18 @@ public class login {
     }
     public static void eliminar(String usu){
         String query2 = "DELETE FROM Estudiantes where Nombre = '"+ usu +"'";
-        System.out.println(query2);
+        //System.out.println(query2);
         try(
                 Connection conn = DriverManager.getConnection(DB_URL,USER,PASS); //Esencial para la conección
                 Statement stmt= conn.createStatement();
         ){
             stmt.executeUpdate(query2);
             System.out.println("Usuario morido xd");
+            System.out.println("----------------------------------------------");
         }catch (Exception el){
             throw new RuntimeException(el);
         }
     }
-
     public static void conectar(){
         try{
             final String DB_URL="jdbc:mysql://localhost/Universidad";
