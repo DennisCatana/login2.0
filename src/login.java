@@ -76,7 +76,7 @@ public class login {
                 Statement stmt= conn.createStatement();
         ){
             stmt.executeUpdate(query2);
-            System.out.println("Usuario morido");
+            System.out.println("Usuario morido xd");
         }catch (Exception el){
             throw new RuntimeException(el);
         }
