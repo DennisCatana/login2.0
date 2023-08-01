@@ -15,17 +15,19 @@ public class login {
     static final String DB_URL="jdbc:mysql://localhost/Universidad";
     static final String USER="root";
     static final String PASS="root_bas3";
-    static final String QUERY="Select Nombre, Clave From Estudiantes;";
-    private String userName;
-    private String claveL;
+    static final String QUERY="Select Nombre, Clave From Estudiantes ;";
+    public static String Nombrei;
+    public static String Clavei;
+    public static String usuariox;
+    public static String clavex;
 
     public login(){
         OKButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                usuariox =usuario.getText().trim();
+                clavex = new String(clave.getPassword()).trim();
                 comprobar();
-                String username = usuario.getText();
-                String claveU = clave.getText();
             }
         });
 
@@ -35,44 +37,29 @@ public class login {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public static void comprobar(){
         try(
-                Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+                Connection conn = DriverManager.getConnection(DB_URL,USER,PASS); //Esencial para la conección
                 Statement stmt= conn.createStatement();
                 ResultSet rs= stmt.executeQuery(QUERY);
         ){
+            boolean userFound = false;
             while (rs.next()){
-                System.out.println("\n----------------------------------------------");
-                System.out.println("Nombre: "+rs.getString("Nombre"));
+
+                Nombrei = rs.getString("Nombre");
+                Clavei = rs.getString("Clave");
+                if(Nombrei.equals(usuariox) && Clavei.equals(clavex)){
+                    userFound = true;
+                    System.out.println("\n----------------------------------------------");
+                    System.out.println("Nombre: "+rs.getString("Nombre"));
                 /*System.out.println("id: "+rs.getInt("id"));
                 System.out.println("Ciudad: "+rs.getString("Ciudad"));
                 System.out.println("Edad: "+rs.getInt("Edad"));
                 System.out.println("Cédula: "+rs.getInt("Cedula"));*/
-                System.out.println("Clave: "+rs.getString("Clave"));
-
+                    System.out.println("Clave: "+rs.getString("Clave"));
+                }}
+            if (!userFound){
+                    System.out.println("!!ERRORR¡¡ Usuario o clave incorrectos.\"");
             }
         }catch (Exception ex){
             throw new RuntimeException(ex);
