@@ -11,7 +11,6 @@ public class login {
     private JButton borrarButton;
     private JButton actualizarButton;
     private JButton agregarButton;
-    private JPanel rootPanel;
     static final String DB_URL="jdbc:mysql://localhost/Universidad";
     static final String USER="root";
     static final String PASS="root_bas3";
@@ -31,6 +30,7 @@ public class login {
                 comprobar();
             }
         });
+
 
         borrarButton.addActionListener(new ActionListener() {
             @Override
@@ -88,14 +88,15 @@ public class login {
                 Clavei = rs.getString("Clave");
                 if(Nombrei.equals(usuariox) && Clavei.equals(clavex)){
                     userFound = true;
-                   // System.out.println("----------------------------------------------");
+                    int result = JOptionPane.showConfirmDialog(null, "Nombre: " + rs.getString("Nombre"), "BIENVENIDO", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                   /* System.out.println("----------------------------------------------");
                     System.out.println("Nombre: "+rs.getString("Nombre"));
                     System.out.println("Clave: "+rs.getString("Clave"));
-                    System.out.println("----------------------------------------------");
+                    System.out.println("----------------------------------------------");*/
                 }}
             if (!userFound){
-                 System.out.println("----------------------------------------------");
-                 System.out.println("!!ERRORR¡¡ Usuario o clave incorrectos.");
+                // Muestra el mensaje de error en una ventana emergente
+                JOptionPane.showMessageDialog(null, "Usuario o clave incorrectos.", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
             }
         }catch (Exception ex){
             throw new RuntimeException(ex);
